@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/1-APIs/">
+    <Project Path="WebApi/WebApi.csproj" />
+  </Folder>
+  <Folder Name="/2-Aplicação/">
+    <Project Path="Aplicacao/Aplicacao.csproj" />
+  </Folder>
+  <Folder Name="/3-Dominio/">
+    <Project Path="Dominio/Dominio.csproj" />
+  </Folder>
+  <Folder Name="/4-Infraestrutura/">
+    <Project Path="Infraestrutura/Infraestrutura.csproj" />
+  </Folder>
+  <Folder Name="/5-Entidades/">
+    <Project Path="Entidades/Entidades.csproj" />
+  </Folder>
+</Solution>
