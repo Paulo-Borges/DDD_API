@@ -1,4 +1,6 @@
 ﻿using Dominio.Interfaces.Genericos;
+using Infraestrutura.Configuracoes;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32.SafeHandles;
 using System.Runtime.InteropServices;
 
@@ -6,29 +8,52 @@ namespace Infraestrutura.Repositorio.Genericos
 {
     public class RepositorioGenerico<T> : IGenericos<T>, IDisposable where T : class
     {
-        public Task Adicionar(T Objeto)
+        private readonly DbContextOptions<Contexto> _optionsBuilder;
+        public RepositorioGenerico()
         {
-            throw new NotImplementedException();
+            _optionsBuilder = new DbContextOptions<Contexto>();
+        }
+        public async Task Adicionar(T Objeto)
+        {
+            using (var data = new Contexto(_optionsBuilder))
+            {
+                await data.Set<T>().AddAsync(Objeto);
+                await data.SaveChangesAsync();
+            }
         }
 
-        public Task Atualizar(T Objeto)
+        public async Task Atualizar(T Objeto)
         {
-            throw new NotImplementedException();
+            using (var data = new Contexto(_optionsBuilder))
+            {
+                data.Set<T>().Update(Objeto);
+                await data.SaveChangesAsync();
+            }
         }
 
-        public Task<T> BuscarPorId(int Id)
+        public async Task<T> BuscarPorId(int Id)
         {
-            throw new NotImplementedException();
+            using (var data = new Contexto(_optionsBuilder))
+            {
+                return await data.Set<T>().FindAsync(Id);
+            }
         }
 
-        public Task Excluir(T Objeto)
+        public async Task Excluir(T Objeto)
         {
-            throw new NotImplementedException();
+            using (var data = new Contexto(_optionsBuilder))
+            {
+                data.Set<T>().Remove(Objeto);
+                await data.SaveChangesAsync();
+            }
         }
 
-        public Task<List<T>> Listar()
+        public async Task<List<T>> Listar()
         {
-            throw new NotImplementedException();
+            using (var data = new Contexto(_optionsBuilder))
+            {
+                return await data.Set<T>().AsNoTracking().ToListAsync();
+            }
         }
 
 
