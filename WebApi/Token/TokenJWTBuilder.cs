@@ -67,7 +67,7 @@ namespace WebApi.Token
                 throw new ArgumentNullException("Audience");
         }
 
-        private TokenJWT Builder()
+        public TokenJWT Builder()
         {
             EnsureArguments();
            
