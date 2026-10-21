@@ -8,7 +8,10 @@ using Entidades.Entidades;
 using Infraestrutura.Configuracoes;
 using Infraestrutura.Repositorio;
 using Infraestrutura.Repositorio.Genericos;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using WebApi.Token;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,8 +36,40 @@ builder.Services.AddSingleton<IServicoNoticia, ServicoNoticia>();
 builder.Services.AddSingleton<IAplicacaoNoticia, AplicacaoNoticia>();
 builder.Services.AddSingleton<IAplicacaoUsuario, AplicacaoUsuario>();
 
+// Incluindo o token JWT__________________________________________________________________________________________________________
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+
+            ValidIssuer = "Teste.Securiry.Bearer",
+            ValidAudience = "Teste.Securiry.Bearer",
+            IssuerSigningKey = JwtSecurityKey.Create("Secret_Key-12345678")
+        };
+
+        options.Events = new JwtBearerEvents
+         {
+            OnAuthenticationFailed = context =>
+            {
+                Console.WriteLine("OnAuthenticationFailed: " + context.Exception.Message);
+                return Task.CompletedTask;
+            },
+            OnTokenValidated = context =>
+            {
+                Console.WriteLine("OnTokenValidated: " + context.SecurityToken);
+                return Task.CompletedTask;
+            }
+        };
+    });
 
 
+        
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
