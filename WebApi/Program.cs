@@ -50,7 +50,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
             ValidIssuer = "Teste.Securiry.Bearer",
             ValidAudience = "Teste.Securiry.Bearer",
-            IssuerSigningKey = JwtSecurityKey.Create("Secret_Key-12345678")
+            IssuerSigningKey = JwtSecurityKey.Create("Secret_Key-1234567801234561234567")
         };
 
         options.Events = new JwtBearerEvents
@@ -88,5 +88,5 @@ if (app.Environment.IsDevelopment())
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.MapGet("/", () => Results.Redirect("/swagger"));
 app.Run();
