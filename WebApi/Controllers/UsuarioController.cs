@@ -39,12 +39,13 @@ namespace WebApi.Controllers
             var resultado = await _aplicacaoUsuario.ExisteUsuario(login.email, login.senha);
             if (resultado)
             {
+                var idUsuario = await _aplicacaoUsuario.RetornaIdUsuario(login.email);
                 var token = new TokenJWTBuilder()
-                    .AddSecurityKey(JwtSecurityKey.Create("Secret_Key-12345678"))
+                    .AddSecurityKey(JwtSecurityKey.Create("sua_chave_secreta_com_mais_de_32_caracteres_aqui_para_o_hs256"))
                     .AddSubject("Empresa - Borges Dev")
                     .AddIssuer("Teste.Securiry.Bearer")
                     .AddAudience("Teste.Securiry.Bearer")
-                    .AddClaim("UsuarioAPINumero", "1")
+                    .AddClaim("idUsuario", idUsuario)
                     .AddExpiry(5)
                     .Builder();
 
@@ -89,12 +90,14 @@ namespace WebApi.Controllers
 
             if (resultado.Succeeded)
             {
+
+                var idUsuario = await _aplicacaoUsuario.RetornaIdUsuario(login.email);
                 var token = new TokenJWTBuilder()
-                    .AddSecurityKey(JwtSecurityKey.Create("Secret_Key-12345678"))
+                    .AddSecurityKey(JwtSecurityKey.Create("sua_chave_secreta_com_mais_de_32_caracteres_aqui_para_o_hs256"))
                     .AddSubject("Empresa - Borges Dev")
                     .AddIssuer("Teste.Securiry.Bearer")
                     .AddAudience("Teste.Securiry.Bearer")
-                    .AddClaim("UsuarioAPINumero", "1")
+                    .AddClaim("idUsuario", idUsuario)
                     .AddExpiry(5)
                     .Builder();
 

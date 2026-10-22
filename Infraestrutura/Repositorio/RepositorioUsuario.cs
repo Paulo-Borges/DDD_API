@@ -1,5 +1,6 @@
 ﻿using Dominio.Interfaces;
 using Entidades.Entidades;
+using Entidades.Enums;
 using Infraestrutura.Configuracoes;
 using Infraestrutura.Repositorio.Genericos;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +26,8 @@ namespace Infraestrutura.Repositorio
                         Email = email,
                         PasswordHash = senha,
                         Idade = idade,
-                        Celular = celular
+                        Celular = celular,
+                        Tipo = TipoUsuario.Comum
                     });
                    
                     await data.SaveChangesAsync();
@@ -52,6 +54,25 @@ namespace Infraestrutura.Repositorio
             catch (Exception)
             {
                 return false;
+            }
+        }
+
+        public async Task<string> RetornaIdUsuario(string email)
+        {
+            try
+            {
+                using (var data = new Contexto(_optionsBuilder))
+                {
+                    var usuario = await data.ApplicationUser.Where(u => u.Email.Equals(email))
+                        .AsNoTracking()
+                        .FirstOrDefaultAsync();
+
+                    return usuario.Id;
+                }
+            }
+            catch (Exception)
+            {
+                return string.Empty;
             }
         }
     }
