@@ -68,6 +68,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngular", Policy =>
+    Policy.WithOrigins("http://localhost:4200")
+    .AllowAnyMethod()
+    .AllowAnyHeader());
+});
 
         
 builder.Services.AddControllers();
@@ -84,6 +91,8 @@ if (app.Environment.IsDevelopment())
     app.MapSwagger();
     app.MapSwaggerUI();
 }
+
+app.UseCors("AllowAmgular");
 
 app.UseAuthorization();
 
