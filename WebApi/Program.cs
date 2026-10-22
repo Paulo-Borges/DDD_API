@@ -92,7 +92,7 @@ if (app.Environment.IsDevelopment())
     app.MapSwaggerUI();
 }
 
-app.UseCors("AllowAmgular");
+app.UseCors("AllowAngular");
 
 app.UseAuthorization();
 
